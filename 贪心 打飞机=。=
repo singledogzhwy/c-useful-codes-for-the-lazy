@@ -1,0 +1,40 @@
+/*飞机按顺序出现
+炮口只能拉低或水平，不能升高
+求每次至少需要的炮口数。
+t为样例数
+n为飞机数
+*/
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+void greed(int h[], int n)
+{
+	int cnt = 1;
+	int lower = 0;
+	for (int i = 1; i < n; i++)
+	{
+		if (h[i] > h[i - 1] && h[i]>lower)
+		{
+			lower = max(h[i - 1], lower);
+			cnt++;
+		}
+	}
+	cout << cnt << endl;
+}
+
+int main()
+{
+	int t, n, h[1000];
+	cin >> t;
+
+	for (int q = 0; q < t; q++)
+	{
+		cin >> n;
+		for (int w = 0; w < n; w++)
+		{
+			cin >> h[w];
+		}
+		greed(h, n);
+	}
+}

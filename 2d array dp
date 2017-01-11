@@ -1,0 +1,60 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+#define yibai 100
+
+void GetLength(int R, int C, int c[yibai][yibai], int ditu[yibai][yibai])
+{
+	int i, j;                          //c为存贮子序列长度的二维数组
+	for (i = 0; i <= R; i++)
+	{
+		for (j = 0; j <= C; j++)
+		{
+			if (i > 0 && j > 0)
+			{
+				c[i][j] = ditu[i][j] + max(c[i][j - 1], c[i - 1][j]);
+			}
+			if (i == 0 && j != 0)
+			{
+				c[i][j] = ditu[i][j] + c[i][j - 1];
+			}
+			if (i != 0 && j == 0)
+			{
+				c[i][j] = ditu[i][j] + c[i - 1][j];
+			}
+			if (i == 0 && j == 0)
+			{
+				c[i][j] = ditu[0][0];
+			}
+		}
+	}
+	printf("%d", c[R - 1][C - 1]);
+}
+
+
+int main()
+{
+	int R, C;
+	while (scanf_s("%d%d",&R&C)!= EOF)
+	{
+		int ditu[yibai][yibai];
+		int c[yibai][yibai];
+		for (int i = 0; i < R; i++)
+		{
+			for (int j = 0; j < C; j++)
+			{
+				cin >> ditu[i][j];
+			}
+		}
+		GetLength(R, C, c, ditu);
+		for (int q = 0; q < R; q++)
+		{
+			for (int z = 0; z < C; z++)
+			{
+				c[i][j] = 0;
+			}
+		}
+	}
+	system("pause");
+	return 0;
+}

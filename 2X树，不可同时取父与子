@@ -1,0 +1,74 @@
+//具体题目忘了，大意就是2×树上每个节点都有一个分数，若在 不可同时取父与子 的限制下，求能取到的分最多是多少。解题用了树形dp
+#include <stdio.h>  
+#include <string.h>  
+#include<iostream>
+using namespace std;
+#define MAX 1000 
+#define max(a,b) (a)>(b)?(a):(b)  
+
+
+struct node {
+
+	int v;
+	node *next;
+}*head[MAX], tree[MAX];
+int n, ptr, dp[MAX][2];
+int vis[MAX], num[MAX];
+
+
+void Initial() {
+
+	ptr = 1;
+	memset(dp, 0, sizeof(dp));
+	memset(vis, 0, sizeof(vis));
+	memset(head, NULL, sizeof(head));
+}
+void AddEdge(int x, int y) {
+
+	tree[ptr].v = y;
+	tree[ptr].next = head[x], head[x] = &tree[ptr++];
+	tree[ptr].v = x;
+	tree[ptr].next = head[y], head[y] = &tree[ptr++];
+}
+void Tree_DP(int v) {
+
+	if (vis[v]) return;
+	vis[v] = 1;
+	int i, j, k, tot = 0, sum;
+	node *p = head[v];
+
+
+	while (p != NULL) {
+
+		if (!vis[p->v]) {
+
+			Tree_DP(p->v);
+			dp[v][1] += dp[p->v][0];
+			dp[v][0] += max(dp[p->v][1], dp[p->v][0]);
+		}
+		p = p->next;
+	}
+	dp[v][1] += num[v];
+}
+
+
+int main()
+{
+	int i, j, k, a, b;
+	cin >> n;
+	Initial();
+		for (i = 1; i <= n; ++i)
+		{
+			cin >> num[i];
+		}
+		
+		for (int z = 0; z < n - 1; z++)
+		{
+			cin >> a; cin >> b;
+			AddEdge(a, b);
+		}
+
+		Tree_DP(1);
+		printf("%d", max(dp[1][0], dp[1][1]));
+	return 0;
+}
